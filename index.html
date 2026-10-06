@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0b2a5b">
+<title>Sagar Events & Catering</title>
+<style>
+:root{
+  --navy:#0b2a5b; --blue:#1565c0; --sky:#e8f1fc; --gold:#e0a82e; --gold-d:#b8821a;
+  --green:#1f8a4c; --red:#d64545; --bg:#f3f5f9; --card:#fff; --ink:#18233a; --mute:#66738c; --line:#e3e8f1;
+  --r:18px; --nav-h:64px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans Malayalam",Roboto,Helvetica,sans-serif;
+  -webkit-font-smoothing:antialiased;line-height:1.45;
+  padding:0 0 calc(var(--nav-h) + 24px + env(safe-area-inset-bottom));}
+.wrap{padding:0 14px;max-width:640px;margin:0 auto}
+
+/* Header */
+.hero{background:linear-gradient(160deg,#071d42 0%,var(--navy) 45%,#164b9a 100%);color:#fff;
+  padding:calc(18px + env(safe-area-inset-top)) 16px 52px;text-align:center;position:relative;overflow:hidden;
+  border-radius:0 0 32px 32px}
+.hero::before,.hero::after{content:"";position:absolute;border-radius:50%;background:rgba(224,168,46,.13)}
+.hero::before{width:200px;height:200px;right:-70px;top:-80px}
+.hero::after{width:140px;height:140px;left:-50px;bottom:-60px;background:rgba(255,255,255,.06)}
+.logo{width:84px;height:84px;margin:0 auto 10px;border-radius:50%;background:#fff;border:3px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;padding:5px;position:relative;z-index:1;
+  box-shadow:0 8px 22px rgba(0,0,0,.28)}
+.logo img{width:100%;height:100%;object-fit:contain;border-radius:50%}
+.hero h1{margin:0;font-size:19px;font-weight:800;letter-spacing:.6px;position:relative;z-index:1}
+.hero p{margin:4px 0 0;font-size:12.5px;color:#cfe0f7;position:relative;z-index:1}
+.main{margin-top:-30px;position:relative;z-index:2}
+
+/* Cards */
+.card{background:var(--card);border-radius:var(--r);padding:16px;margin-bottom:14px;
+  box-shadow:0 6px 20px rgba(11,42,91,.07);border:1px solid var(--line)}
+.card h3{margin:0;font-size:16px;color:var(--navy)}
+.card-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}
+.sec-title{font-size:13px;font-weight:700;color:var(--mute);margin:0 0 10px}
+
+/* Forms */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.full{grid-column:1/-1}
+label{display:block;font-size:12px;font-weight:700;color:var(--mute);margin-bottom:5px}
+input,select{width:100%;height:46px;padding:0 12px;border:1.5px solid var(--line);border-radius:12px;font-size:16px;
+  background:#f8fafd;color:var(--ink);font-family:inherit;appearance:none;-webkit-appearance:none}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2366738c' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:34px}
+input:focus,select:focus{outline:none;border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(21,101,192,.12)}
+input[type=date],input[type=month]{min-height:46px}
+
+/* Buttons */
+.btn{border:none;color:#fff;height:46px;padding:0 14px;border-radius:12px;font-weight:700;font-size:14px;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;font-family:inherit;
+  transition:transform .12s,opacity .12s}
+.btn:active{transform:scale(.97);opacity:.9}
+.btn.blue{background:linear-gradient(135deg,#1565c0,#2a86e6)}
+.btn.gold{background:linear-gradient(135deg,var(--gold),#f0c04f);color:#3a2a00}
+.btn.green{background:linear-gradient(135deg,#1f8a4c,#35b06a)}
+.btn.red{background:linear-gradient(135deg,#d64545,#ef6a6a)}
+.btn.ghost{background:#eef2f8;color:var(--navy)}
+.btn.ghost.on{background:var(--navy);color:#fff}
+.btn.sm{height:36px;padding:0 12px;font-size:12.5px;border-radius:10px}
+.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+
+/* Settings sheet */
+.sheet-back{position:fixed;inset:0;background:rgba(7,29,66,.55);z-index:80;display:none;align-items:flex-end;justify-content:center}
+.sheet-back.open{display:flex}
+.sheet{background:var(--bg);width:100%;max-width:640px;max-height:92vh;border-radius:26px 26px 0 0;display:flex;flex-direction:column;
+  animation:up .25s ease-out;padding-bottom:env(safe-area-inset-bottom)}
+@keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.sheet-top{display:flex;justify-content:space-between;align-items:center;padding:16px 16px 10px}
+.sheet-top h3{margin:0;font-size:18px;color:var(--navy)}
+.sheet-body{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 14px 20px}
+.sheet .card{box-shadow:none;margin-bottom:12px}
+.inline{display:flex;gap:8px}
+.inline input{flex:1;min-width:0}
+.m-cat{display:flex;justify-content:space-between;align-items:center;background:var(--sky);color:var(--navy);font-weight:800;
+  font-size:13px;padding:8px 10px;border-radius:10px;border-left:4px solid var(--gold);margin:12px 0 6px}
+.m-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}
+.m-row span{flex:1;font-size:13.5px;font-weight:600;min-width:0}
+.m-row .rt{display:flex;align-items:center;gap:4px;font-weight:700;color:var(--mute)}
+.m-row input{width:78px;height:38px;font-size:15px;padding:0 8px;text-align:right}
+.m-none{font-size:12.5px;color:var(--mute);padding:6px 2px}
+
+/* Add item bar */
+.add-bar{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;margin-top:10px}
+.badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:#eef2f8;color:var(--mute);white-space:nowrap}
+
+/* Table */
+.table-container{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:14px;border-radius:12px;border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{background:#f1f5fb;color:var(--mute);font-size:11.5px;font-weight:700;text-align:left;padding:9px 8px}
+td{padding:10px 8px;border-top:1px solid var(--line)}
+.text-right{text-align:right}
+.cat-row td{background:var(--sky);color:var(--navy);font-weight:800;font-size:12.5px;border-left:4px solid var(--gold)}
+.empty-row td{text-align:center;color:var(--mute);padding:22px 8px;font-size:13px}
+.x{width:28px;height:28px;border-radius:8px;border:none;background:#fde4e4;color:var(--red);font-size:14px;font-weight:800;cursor:pointer}
+body.hide-rates .rate-col{display:none!important}
+body.hide-qty .qty-col{display:none!important}
+
+.total-bar{margin-top:14px;display:flex;justify-content:space-between;align-items:center;
+  background:linear-gradient(135deg,var(--navy),#1c58b0);color:#fff;border-radius:14px;padding:14px 16px}
+.total-bar span{font-size:13px;color:#cfe0f7;font-weight:600}
+.total-bar strong{font-size:22px;color:#ffd467;letter-spacing:.3px}
+
+/* Calendar */
+.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.cal-head h4{margin:0;font-size:16px;color:var(--navy)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center}
+.dn{font-size:11px;font-weight:800;color:var(--mute);padding-bottom:4px}
+.dn:first-child{color:var(--red)}
+.cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:#f3f6fb;border-radius:12px;
+  font-size:14px;font-weight:600;position:relative;cursor:pointer}
+.cell.empty{background:none;cursor:default}
+.cell.has{background:var(--sky);color:var(--blue);font-weight:800;border:1.5px solid #8fbdf0}
+.cell.has::after{content:"";position:absolute;bottom:5px;width:5px;height:5px;border-radius:50%;background:var(--gold-d)}
+.cell.today{box-shadow:inset 0 0 0 2px var(--gold)}
+.cell.sel{background:var(--blue);color:#fff;border-color:var(--blue)}
+.cell.sel::after{background:#ffd467}
+
+/* Order list cards */
+.o-card{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 14px;margin-bottom:10px;
+  border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:14px;background:#fff;cursor:pointer}
+.o-card:active{background:#f8fafd}
+.o-name{font-weight:800;color:var(--navy);font-size:15px}
+.o-meta{font-size:12px;color:var(--mute);margin-top:2px}
+.o-amt{font-weight:800;color:var(--blue);font-size:14px;margin-top:4px}
+.o-actions{display:flex;flex-direction:column;gap:6px}
+.empty-state{text-align:center;color:var(--mute);font-size:13.5px;padding:26px 10px}
+.empty-state .ic{font-size:34px;display:block;margin-bottom:6px}
+
+/* Bottom nav */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);
+  padding:6px 12px calc(6px + env(safe-area-inset-bottom));display:flex;gap:6px;justify-content:center}
+.nav button{flex:1;max-width:200px;height:52px;border:none;background:none;border-radius:14px;color:var(--mute);
+  font-size:11.5px;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;font-family:inherit}
+.nav button i{font-style:normal;font-size:20px;line-height:1}
+.nav button.active{background:var(--sky);color:var(--navy)}
+
+/* Toast */
+#toast{position:fixed;left:50%;bottom:calc(var(--nav-h) + 22px + env(safe-area-inset-bottom));transform:translate(-50%,20px);
+  background:var(--navy);color:#fff;padding:12px 18px;border-radius:14px;font-size:13.5px;font-weight:600;
+  opacity:0;pointer-events:none;transition:.25s;z-index:99;max-width:90%;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#toast.err{background:var(--red)}
+
+.pdf-date{display:none}
+
+/* Print */
+@page{size:A4;margin:0}
+@media print{
+  body{background:#fff;padding:12mm 10mm!important}
+  .no-print,.nav,#toast{display:none!important}
+  .hero{background:none!important;color:#000;border-bottom:2px solid #000;border-radius:0;padding:0 0 10px;overflow:visible}
+  .hero::before,.hero::after{display:none}
+  .hero p{color:#444}.logo{box-shadow:none;border:none;width:70px;height:70px}
+  .main{margin-top:10px}
+  .card{box-shadow:none;border:none;padding:0}
+  .hide-in-pdf{display:none!important}
+  .pdf-date{display:block!important;text-align:right;font-weight:700;font-size:13px;margin:8px 0}
+  .total-bar{background:none!important;color:#000;border:2px solid #000;border-radius:8px}
+  .total-bar span,.total-bar strong{color:#000}
+  .cat-row td{background:#eee!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #tab-calendar,#tab-list,.sheet-back{display:none!important}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="logo"><img src="logo.png" alt="Sagar Events Logo"
+    onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 80 80%22><rect width=%2280%22 height=%2280%22 fill=%22%230b2a5b%22/><text x=%2240%22 y=%2250%22 font-size=%2234%22 font-weight=%22bold%22 text-anchor=%22middle%22 fill=%22%23e0a82e%22 font-family=%22Arial%22>SE</text></svg>'"></div>
+  <h1>SAGAR EVENTS & CATERING</h1>
+  <p>Premium Catering & Event Management</p>
+</header>
+
+<div class="wrap main">
+
+  <!-- ORDER TAB -->
+  <section id="tab-order">
+    <div class="pdf-date">തീയതി: <span id="pdfDateDisplay"></span></div>
+
+    <div class="card hide-in-pdf">
+      <div class="card-head"><h3>📝 ഓർഡർ വിവരങ്ങൾ</h3>
+        <button class="btn gold sm no-print" onclick="newOrder()">＋ New</button></div>
+      <div class="grid">
+        <div class="full"><label>Customer Name (പേര്)</label><input type="text" id="custName" placeholder="കസ്റ്റമറുടെ പേര്"></div>
+        <div><label>Phone (ഫോൺ)</label><input type="tel" id="custPhone" placeholder="മൊബൈൽ നമ്പർ"></div>
+        <div><label>Pax (ആളുകൾ)</label><input type="number" id="pax" inputmode="numeric" placeholder="2000"></div>
+        <div class="full"><label>Venue (വേദി / സ്ഥലം)</label><input type="text" id="venue" placeholder="പരിപാടി നടക്കുന്ന സ്ഥലം"></div>
+        <div class="full"><label>Date (തീയതി)</label><input type="date" id="orderDate"></div>
+      </div>
+      <div class="btn-row no-print">
+        <button class="btn green" style="grid-column:1/-1" onclick="saveCurrentOrder()">💾 Save Order</button>
+        <button class="btn blue" onclick="printPDF()">📄 Export PDF</button>
+        <button class="btn ghost" onclick="openSettings()">⚙️ Settings</button>
+        <button class="btn ghost" id="rateToggleBtn" onclick="toggleRatesVisibility()">👁️ Hide Rates</button>
+        <button class="btn ghost" id="qtyToggleBtn" onclick="toggleQtyVisibility()">👁️ Hide Qty</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>🍽️ Menu & Costing</h3><span class="badge no-print" id="viewStatusBadge">Full View</span></div>
+
+      <div class="no-print">
+        <div class="grid">
+          <div class="full"><label>വിഭാഗം (Category)</label>
+            <select id="categoryFilter" onchange="filterItemsByCategory()"></select></div>
+          <div class="full"><label>ഐറ്റം തിരഞ്ഞെടുക്കുക</label><select id="itemDropdown"></select></div>
+        </div>
+        <div class="add-bar">
+          <div><label>Qty (അളവ്)</label><input type="number" id="orderQty" inputmode="decimal" placeholder="Kg/Nos"></div>
+          <div><label>Rate (വില)</label><input type="number" id="orderRate" inputmode="decimal" placeholder="₹"></div>
+          <button class="btn blue" onclick="addItemToOrder()">+ Add</button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead><tr>
+            <th>Item</th>
+            <th class="qty-col" style="width:58px">Qty</th>
+            <th class="rate-col" style="width:62px">Rate</th>
+            <th class="rate-col text-right" style="width:80px">Total</th>
+            <th class="no-print" style="width:40px"></th>
+          </tr></thead>
+          <tbody id="orderTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="total-bar rate-col"><span>Total Amount</span><strong>₹<span id="grandTotal">0</span></strong></div>
+    </div>
+  </section>
+
+  <!-- CALENDAR TAB -->
+  <section id="tab-calendar" style="display:none">
+    <div class="card">
+      <div class="cal-head">
+        <button class="btn ghost sm" onclick="changeMonth(-1)">◀</button>
+        <h4 id="calMonthTitle">Month Year</h4>
+        <button class="btn ghost sm" onclick="changeMonth(1)">▶</button>
+      </div>
+      <div class="cal-grid">
+        <div class="dn">S</div><div class="dn">M</div><div class="dn">T</div><div class="dn">W</div><div class="dn">T</div><div class="dn">F</div><div class="dn">S</div>
+      </div>
+      <div class="cal-grid" id="calDaysGrid" style="margin-top:4px"></div>
+    </div>
+    <div class="card">
+      <h3 id="selectedDateTitle" style="margin-bottom:12px">തീയതിയിലെ ഓർഡറുകൾ</h3>
+      <div id="dateOrdersList"><div class="empty-state"><span class="ic">📅</span>കലണ്ടറിൽ തീയതി തിരഞ്ഞെടുക്കുക.</div></div>
+    </div>
+  </section>
+
+  <!-- LIST TAB -->
+  <section id="tab-list" style="display:none">
+    <div class="card">
+      <div class="card-head">
+        <h3>📋 ഓർഡർ ഹിസ്റ്ററി</h3>
+        <input type="month" id="filterMonth" style="width:150px;height:40px;font-size:14px" onchange="renderAllOrdersList()">
+      </div>
+      <div id="allOrdersContainer"></div>
+    </div>
+  </section>
+</div>
+
+<nav class="nav no-print">
+  <button class="active" data-tab="order" onclick="switchTab('order')"><i>📝</i>ഓർഡർ</button>
+  <button data-tab="calendar" onclick="switchTab('calendar')"><i>📅</i>കലണ്ടർ</button>
+  <button data-tab="list" onclick="switchTab('list')"><i>📋</i>ലിസ്റ്റ്</button>
+</nav>
+<div class="sheet-back no-print" id="settingsSheet" onclick="if(event.target===this)closeSettings()">
+  <div class="sheet" role="dialog" aria-label="Settings">
+    <div class="sheet-top"><h3>⚙️ Settings</h3><button class="btn ghost sm" onclick="closeSettings()">✕ Close</button></div>
+    <div class="sheet-body">
+      <div class="card">
+        <p class="sec-title">1. പുതിയ വിഭാഗം ചേർക്കുക (Add Category)</p>
+        <div class="inline"><input type="text" id="newCatName" placeholder="ഉദാ: Snacks">
+          <button class="btn blue" onclick="addCategory()">Add</button></div>
+      </div>
+      <div class="card">
+        <p class="sec-title">2. പുതിയ ഐറ്റം ചേർക്കുക (Add Item & Rate)</p>
+        <div class="grid">
+          <div class="full"><select id="newMasterCat"></select></div>
+          <div class="full"><input type="text" id="newMasterItem" placeholder="Item Name (ഉദാ: Biriyani)"></div>
+          <div><input type="number" id="newMasterRate" inputmode="decimal" placeholder="Rate (₹)"></div>
+          <div><button class="btn green" style="width:100%" onclick="addMasterItem()">Add Item</button></div>
+        </div>
+      </div>
+      <div class="card">
+        <p class="sec-title">3. മെനു ലിസ്റ്റ് (Edit Rates / Delete)</p>
+        <div id="masterList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+const DEFAULT_CATS = ["Welcome Drink","Main Course","Side Dish & Curries","Vegetarian","Desserts & Sweets","Live Counter","Beverages"];
+const defaultMaster = [
+  {cat:"Welcome Drink",name:"Watermelon Juice",rate:30},{cat:"Welcome Drink",name:"Grape Juice",rate:35},
+  {cat:"Welcome Drink",name:"Mint Lime",rate:25},{cat:"Welcome Drink",name:"Pineapple Juice",rate:35},
+  {cat:"Welcome Drink",name:"Mojito Live",rate:45},{cat:"Main Course",name:"Lagon Biriyani",rate:180},
+  {cat:"Main Course",name:"Beef Zurbiyani",rate:220},{cat:"Main Course",name:"Beef Varattu",rate:380},
+  {cat:"Main Course",name:"Chicken Kethal",rate:260},{cat:"Side Dish & Curries",name:"Pickle (2 types)",rate:10},
+  {cat:"Side Dish & Curries",name:"Salad",rate:10},{cat:"Vegetarian",name:"Meals with Rice",rate:100},
+  {cat:"Vegetarian",name:"Chemmen Muringa Curry",rate:60},{cat:"Vegetarian",name:"Pineapple Kichadi",rate:30},
+  {cat:"Vegetarian",name:"Upperi, Pappadam, Aviyal",rate:40},{cat:"Vegetarian",name:"Payasam",rate:45},
+  {cat:"Beverages",name:"Mineral Water (2500)",rate:10},{cat:"Live Counter",name:"Live Tea Counter (6 Type)",rate:25}
+];
+const fmtDate = d => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(d || ""); return m ? `${m[3]}-${m[2]}-${m[1]}` : (d || ""); };
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const load = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch(e) { return d; } };
+
+let masterItems = load("sagarMasterV2", defaultMaster);
+let categories = load("sagarCatsV2", DEFAULT_CATS);
+masterItems.forEach(i => { if (!categories.includes(i.cat)) categories.push(i.cat); });
+let savedOrders = load("sagarOrdersV2", []);
+let currentOrderItems = [], currentLoadedOrderId = null, selectedDate = null;
+let calCurrentDate = new Date(), isRatesHidden = false, isQtyHidden = false;
+
+function toast(msg, err) {
+  const t = $("toast"); t.textContent = msg; t.className = "show" + (err ? " err" : "");
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.className = "", 2200);
+}
+
+function switchTab(tab) {
+  ["order","calendar","list"].forEach(n => $("tab-" + n).style.display = n === tab ? "block" : "none");
+  document.querySelectorAll(".nav button").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+  if (tab === "calendar") renderCalendar();
+  if (tab === "list") renderAllOrdersList();
+  window.scrollTo({top: 0, behavior: "smooth"});
+}
+
+/* Visibility toggles */
+function toggleRatesVisibility() {
+  isRatesHidden = !isRatesHidden;
+  document.body.classList.toggle("hide-rates", isRatesHidden);
+  const b = $("rateToggleBtn"); b.textContent = isRatesHidden ? "👁️ Show Rates" : "👁️ Hide Rates";
+  b.classList.toggle("on", isRatesHidden); updateViewBadge(); renderCurrentOrderTable();
+}
+function toggleQtyVisibility() {
+  isQtyHidden = !isQtyHidden;
+  document.body.classList.toggle("hide-qty", isQtyHidden);
+  const b = $("qtyToggleBtn"); b.textContent = isQtyHidden ? "👁️ Show Qty" : "👁️ Hide Qty";
+  b.classList.toggle("on", isQtyHidden); updateViewBadge(); renderCurrentOrderTable();
+}
+function updateViewBadge() {
+  const b = $("viewStatusBadge"); let t = "Full View", bg = "#eef2f8", c = "#66738c";
+  if (isRatesHidden && isQtyHidden) { t = "Items Only"; bg = "#fee2e2"; c = "#991b1b"; }
+  else if (isRatesHidden) { t = "Rates Hidden"; bg = "#fef3c7"; c = "#b45309"; }
+  else if (isQtyHidden) { t = "Qty Hidden"; bg = "#e0e7ff"; c = "#3730a3"; }
+  b.textContent = t; b.style.background = bg; b.style.color = c;
+}
+
+/* Master items & categories */
+function saveMaster() {
+  localStorage.setItem("sagarMasterV2", JSON.stringify(masterItems));
+  localStorage.setItem("sagarCatsV2", JSON.stringify(categories));
+  fillCategorySelects(); filterItemsByCategory(); renderSettings();
+}
+function fillCategorySelects() {
+  const cf = $("categoryFilter"), keep = cf.value, nm = $("newMasterCat"), keepN = nm.value;
+  const opts = categories.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join("");
+  cf.innerHTML = '<option value="ALL">-- എല്ലാ വിഭാഗങ്ങളും --</option>' + opts;
+  nm.innerHTML = opts;
+  if (categories.includes(keep)) cf.value = keep;
+  if (categories.includes(keepN)) nm.value = keepN;
+}
+function openSettings() { renderSettings(); $("settingsSheet").classList.add("open"); document.body.style.overflow = "hidden"; }
+function closeSettings() { $("settingsSheet").classList.remove("open"); document.body.style.overflow = ""; }
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeSettings(); });
+
+function filterItemsByCategory() {
+  const cat = $("categoryFilter").value, dd = $("itemDropdown");
+  let h = '<option value="">-- ഐറ്റം തിരഞ്ഞെടുക്കുക --</option>';
+  masterItems.forEach((it, i) => {
+    if (cat === "ALL" || it.cat === cat) h += `<option value="${i}">${esc(it.name)}${cat === "ALL" ? " · " + esc(it.cat) : ""}</option>`;
+  });
+  dd.innerHTML = h; $("orderRate").value = "";
+}
+$("itemDropdown").addEventListener("change", function() {
+  if (this.value !== "") $("orderRate").value = masterItems[this.value].rate;
+});
+function renderSettings() {
+  $("masterList").innerHTML = categories.map((c, ci) => {
+    const rows = masterItems.map((it, i) => it.cat !== c ? "" : `
+      <div class="m-row"><span>${esc(it.name)}</span>
+        <label class="rt" style="margin:0">₹<input type="number" inputmode="decimal" value="${it.rate}" onchange="updateRate(${i},this.value)"></label>
+        <button class="x" onclick="deleteMasterItem(${i})">✕</button></div>`).join("");
+    return `<div class="m-cat"><span>${esc(c)}</span><button class="x" onclick="deleteCategory(${ci})">✕</button></div>
+      ${rows || '<div class="m-none">ഐറ്റംസ് ഇല്ല</div>'}`;
+  }).join("") || '<div class="m-none">വിഭാഗങ്ങൾ ഇല്ല. മുകളിൽ ചേർക്കുക.</div>';
+}
+function addCategory() {
+  const name = $("newCatName").value.trim();
+  if (!name) return toast("വിഭാഗത്തിന്റെ പേര് നൽകുക", true);
+  if (categories.some(c => c.toLowerCase() === name.toLowerCase())) return toast("ഈ വിഭാഗം ഇതിനകം ഉണ്ട്", true);
+  categories.push(name); saveMaster(); $("newCatName").value = ""; $("newMasterCat").value = name; toast("വിഭാഗം ചേർത്തു ✓");
+}
+function deleteCategory(ci) {
+  const c = categories[ci], n = masterItems.filter(i => i.cat === c).length;
+  if (!confirm(n ? `"${c}" വിഭാഗവും അതിലെ ${n} ഐറ്റംസും ഒഴിവാക്കണോ?` : `"${c}" ഒഴിവാക്കണോ?`)) return;
+  categories.splice(ci, 1); masterItems = masterItems.filter(i => i.cat !== c); saveMaster();
+}
+function addMasterItem() {
+  const cat = $("newMasterCat").value, name = $("newMasterItem").value.trim();
+  const rate = parseFloat($("newMasterRate").value);
+  if (!cat) return toast("ആദ്യം ഒരു വിഭാഗം ചേർക്കുക", true);
+  if (!name || isNaN(rate)) return toast("ഐറ്റം പേരും റേറ്റും നൽകുക", true);
+  masterItems.push({cat, name, rate}); saveMaster();
+  $("newMasterItem").value = ""; $("newMasterRate").value = ""; toast("ഐറ്റം ചേർത്തു ✓");
+}
+function updateRate(i, v) {
+  const r = parseFloat(v); if (isNaN(r)) return renderSettings();
+  masterItems[i].rate = r; saveMaster(); toast("റേറ്റ് മാറ്റി ✓");
+}
+function deleteMasterItem(i) { masterItems.splice(i, 1); saveMaster(); }
+
+/* Current order */
+function addItemToOrder() {
+  const idx = $("itemDropdown").value, qty = parseFloat($("orderQty").value), rate = parseFloat($("orderRate").value);
+  if (idx === "" || isNaN(qty) || isNaN(rate)) return toast("ഐറ്റം, അളവ്, റേറ്റ് എന്നിവ നൽകുക", true);
+  const m = masterItems[idx];
+  currentOrderItems.push({cat: m.cat, name: m.name, qty, rate, total: qty * rate});
+  renderCurrentOrderTable(); $("orderQty").value = ""; toast("ചേർത്തു ✓");
+}
+function renderCurrentOrderTable() {
+  const tb = $("orderTableBody"); let total = 0, g = {};
+  currentOrderItems.forEach((it, i) => { total += it.total; (g[it.cat] = g[it.cat] || []).push({...it, i}); });
+  const cols = 2 + (isQtyHidden ? 0 : 1) + (isRatesHidden ? 0 : 2);
+  let h = "";
+  for (const cat in g) {
+    h += `<tr class="cat-row"><td colspan="${cols}">${esc(cat)}</td></tr>`;
+    g[cat].forEach(it => {
+      h += `<tr><td>${esc(it.name)}</td><td class="qty-col">${it.qty}</td><td class="rate-col">₹${it.rate}</td>
+        <td class="rate-col text-right"><b>₹${it.total.toLocaleString("en-IN")}</b></td>
+        <td class="no-print text-right"><button class="x" onclick="removeOrderItem(${it.i})">✕</button></td></tr>`;
+    });
+  }
+  tb.innerHTML = h || `<tr class="empty-row"><td colspan="${cols}">ഐറ്റംസ് ഒന്നും ചേർത്തിട്ടില്ല</td></tr>`;
+  $("grandTotal").textContent = total.toLocaleString("en-IN");
+}
+function removeOrderItem(i) { currentOrderItems.splice(i, 1); renderCurrentOrderTable(); }
+
+function newOrder() {
+  currentLoadedOrderId = null; currentOrderItems = [];
+  ["custName","custPhone","venue","pax"].forEach(id => $(id).value = "");
+  $("orderDate").valueAsDate = new Date(); renderCurrentOrderTable(); toast("പുതിയ ഓർഡർ");
+}
+function saveCurrentOrder() {
+  const date = $("orderDate").value;
+  if (!date) return toast("ഓർഡർ തീയതി നൽകുക", true);
+  if (!currentOrderItems.length) return toast("കുറഞ്ഞത് ഒരു ഐറ്റം ചേർക്കുക", true);
+  const order = {
+    id: currentLoadedOrderId || Date.now(),
+    custName: $("custName").value.trim() || "Customer", custPhone: $("custPhone").value.trim(),
+    venue: $("venue").value.trim(), pax: $("pax").value, date,
+    items: [...currentOrderItems], total: currentOrderItems.reduce((s, i) => s + i.total, 0)
+  };
+  const k = savedOrders.findIndex(o => o.id === order.id);
+  if (k !== -1) savedOrders[k] = order; else savedOrders.push(order);
+  currentLoadedOrderId = order.id;
+  localStorage.setItem("sagarOrdersV2", JSON.stringify(savedOrders));
+  toast("ഓർഡർ സേവ് ചെയ്തു ✓");
+}
+function loadOrder(id) {
+  const o = savedOrders.find(x => x.id === id); if (!o) return;
+  currentLoadedOrderId = o.id;
+  $("custName").value = o.custName || ""; $("custPhone").value = o.custPhone || "";
+  $("venue").value = o.venue || ""; $("pax").value = o.pax || ""; $("orderDate").value = o.date;
+  currentOrderItems = [...o.items]; renderCurrentOrderTable(); switchTab("order");
+}
+function deleteOrder(id, e) {
+  if (e) e.stopPropagation();
+  if (!confirm("ഈ ഓർഡർ ഒഴിവാക്കണോ?")) return;
+  savedOrders = savedOrders.filter(o => o.id !== id);
+  localStorage.setItem("sagarOrdersV2", JSON.stringify(savedOrders));
+  if (currentLoadedOrderId === id) currentLoadedOrderId = null;
+  renderAllOrdersList(); renderCalendar(); if (selectedDate) showOrdersForDate(selectedDate);
+  toast("ഓർഡർ ഒഴിവാക്കി");
+}
+
+/* PDF */
+function printPDF() {
+  const name = $("custName").value.trim() || "Customer";
+  $("pdfDateDisplay").textContent = fmtDate($("orderDate").value);
+  const t = document.title; document.title = `${name}_Sagar_Catering_Quotation`;
+  window.print(); setTimeout(() => document.title = t, 1000);
+}
+
+/* Calendar */
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+function renderCalendar() {
+  const y = calCurrentDate.getFullYear(), m = calCurrentDate.getMonth();
+  $("calMonthTitle").textContent = `${MONTHS[m]} ${y}`;
+  const first = new Date(y, m, 1).getDay(), days = new Date(y, m + 1, 0).getDate();
+  const today = new Date().toISOString().slice(0, 10);
+  let h = '<div class="cell empty"></div>'.repeat(first);
+  for (let d = 1; d <= days; d++) {
+    const ds = `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+    const has = savedOrders.some(o => o.date === ds);
+    h += `<div class="cell${has ? " has" : ""}${ds === today ? " today" : ""}${ds === selectedDate ? " sel" : ""}" onclick="showOrdersForDate('${ds}')">${d}</div>`;
+  }
+  $("calDaysGrid").innerHTML = h;
+}
+function changeMonth(d) { calCurrentDate.setDate(1); calCurrentDate.setMonth(calCurrentDate.getMonth() + d); renderCalendar(); }
+
+function orderCard(o, withActions) {
+  return `<div class="o-card" onclick="loadOrder(${o.id})">
+    <div style="min-width:0">
+      <div class="o-name">👤 ${esc(o.custName)}</div>
+      <div class="o-meta">${withActions ? "📅 " + fmtDate(o.date) + " · " : ""}📍 ${esc(o.venue || "N/A")}</div>
+      <div class="o-meta">📞 ${esc(o.custPhone || "N/A")}${o.pax ? " · " + esc(o.pax) + " Pax" : ""}</div>
+      <div class="o-amt">₹${o.total.toLocaleString("en-IN")}</div>
+    </div>
+    <div class="o-actions">
+      <button class="btn blue sm" onclick="event.stopPropagation();loadOrder(${o.id})">Edit</button>
+      ${withActions ? `<button class="btn red sm" onclick="deleteOrder(${o.id},event)">Delete</button>` : ""}
+    </div></div>`;
+}
+function showOrdersForDate(ds) {
+  selectedDate = ds; renderCalendar();
+  $("selectedDateTitle").textContent = `📅 ${fmtDate(ds)}`;
+  const list = savedOrders.filter(o => o.date === ds);
+  $("dateOrdersList").innerHTML = list.length ? list.map(o => orderCard(o, false)).join("")
+    : `<div class="empty-state"><span class="ic">🗓️</span>ഈ തീയതിയിൽ ഓർഡറുകൾ ഒന്നും ഇല്ല.</div>`;
+}
+function renderAllOrdersList() {
+  const mf = $("filterMonth").value;
+  let list = savedOrders.filter(o => !mf || o.date.startsWith(mf));
+  list.sort((a, b) => new Date(b.date) - new Date(a.date));
+  $("allOrdersContainer").innerHTML = list.length ? list.map(o => orderCard(o, true)).join("")
+    : `<div class="empty-state"><span class="ic">📭</span>ഓർഡറുകൾ ലഭ്യമല്ല.</div>`;
+}
+
+/* Init */
+$("orderDate").valueAsDate = new Date();
+fillCategorySelects(); filterItemsByCategory(); renderCurrentOrderTable();
+</script>
+</body>
+</html>
