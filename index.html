@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+  <meta charset="UTF-8">
+  <!-- iPhone നോച്ചും സ്കെയിലിംഗും കൃത്യമാക്കാനുള്ള Viewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Sagar Events & Catering</title>
+  
+  <style>
+    :root { 
+      --primary-grad: linear-gradient(135deg, #0d47a1 0%, #1976d2 50%, #00b0ff 100%);
+      --accent-gold: #fbc02d;
+      --accent-grad: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+      --success-grad: linear-gradient(135deg, #2e7d32 0%, #43a047 100%);
+      --danger-grad: linear-gradient(135deg, #d32f2f 0%, #ef5350 100%);
+      --bg: #f4f6f9;
+      --card-bg: #ffffff;
+      --text-dark: #1e293b;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Roboto, Helvetica, sans-serif; 
+      background: var(--bg); 
+      margin: 0; 
+      /* iPhone Safe Area padding */
+      padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+      color: var(--text-dark); 
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* Header & Branding */
+    .header-card {
+      background: var(--primary-grad);
+      color: #fff;
+      padding: 20px 14px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(13, 71, 161, 0.22);
+      margin-bottom: 14px;
+    }
+    .logo-container {
+      background: #ffffff;
+      width: 82px;
+      height: 82px;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+      border: 3px solid var(--accent-gold);
+      padding: 5px;
+    }
+    .logo-container img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .brand-title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      margin: 0;
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+    .brand-subtitle {
+      font-size: 12px;
+      color: #e0f2fe;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* Cards */
+    .card { 
+      background: var(--card-bg); 
+      padding: 16px; 
+      border-radius: 16px; 
+      box-shadow: 0 3px 10px rgba(0,0,0,0.04); 
+      margin-bottom: 14px; 
+      border: 1px solid #e2e8f0;
+    }
+    h3, h4 { margin: 2px 0 12px; color: #0f172a; }
+
+    /* Navigation Tabs */
+    .tab-bar { display: flex; gap: 6px; margin-bottom: 12px; }
+    .tab-btn { 
+      flex: 1; 
+      padding: 11px 4px; 
+      font-size: 13px; 
+      font-weight: 700; 
+      background: #e2e8f0; 
+      color: #475569; 
+      border: none; 
+      border-radius: 12px; 
+      cursor: pointer; 
+      text-align: center;
+    }
+    .tab-btn.active { 
+      background: var(--primary-grad); 
+      color: #fff; 
+      box-shadow: 0 3px 8px rgba(25, 118, 210, 0.3);
+    }
+
+    /* Form Fields - 16px ഫോണ്ട് സൂം ഒഴിവാക്കാൻ */
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    label { font-size: 12px; font-weight: 700; color: #475569; display: block; margin-bottom: 3px; }
+    input, select { 
+      width: 100%; 
+      padding: 10px; 
+      border: 1.5px solid #cbd5e1; 
+      border-radius: 10px; 
+      font-size: 16px; /* iOS Auto-Zoom തടയാൻ */
+      box-sizing: border-box; 
+      background: #f8fafc;
+      -webkit-appearance: none;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #0284c7;
+      background: #ffffff;
+    }
+
+    /* Touch-friendly Buttons */
+    .btn { 
+      color: #fff; 
+      border: none; 
+      padding: 11px 14px; 
+      border-radius: 10px; 
+      font-weight: 700; 
+      cursor: pointer; 
+      display: inline-flex; 
+      align-items: center; 
+      justify-content: center; 
+      font-size: 13px;
+    }
+    .btn:active { opacity: 0.85; transform: scale(0.98); }
+    .btn-blue { background: var(--primary-grad); }
+    .btn-orange { background: var(--accent-grad); }
+    .btn-green { background: var(--success-grad); }
+    .btn-red { background: var(--danger-grad); }
+
+    /* Tables */
+    .table-container { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
+    th, td { border: 1px solid #e2e8f0; padding: 8px 6px; text-align: left; }
+    th { background: #e0f2fe; color: #0369a1; font-weight: 700; }
+    tbody tr:nth-child(even) { background-color: #f8fafc; }
+    .text-right { text-align: right; }
+
+    /* Calendar Grid */
+    .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+    .cal-day-name { font-size: 11px; font-weight: 800; color: #64748b; padding-bottom: 4px; }
+    .cal-cell { 
+      aspect-ratio: 1; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: center; 
+      background: #f1f5f9; 
+      border-radius: 9px; 
+      font-size: 13px; 
+      font-weight: 600; 
+      cursor: pointer; 
+      position: relative; 
+    }
+    .cal-cell.empty { background: transparent; cursor: default; }
+    .cal-cell.has-order { 
+      background: #e0f2fe; 
+      color: #0284c7; 
+      font-weight: bold; 
+      border: 1.5px solid #38bdf8; 
+    }
+    .cal-cell.active-day { border: 2px solid #0284c7; background: #bae6fd; }
+    .order-badge { 
+      position: absolute; 
+      bottom: 2px; 
+      width: 5px; 
+      height: 5px; 
+      background: #ef4444; 
+      border-radius: 50%; 
+    }
+
+    /* Order Cards */
+    .order-card-item { 
+      border-left: 5px solid #0284c7;
+      padding: 12px; 
+      border-radius: 12px; 
+      margin-bottom: 10px; 
+      background: #ffffff; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      border-top: 1px solid #f1f5f9;
+      border-right: 1px solid #f1f5f9;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .no-print { display: none !important; }
+      .card { box-shadow: none; border: none; padding: 0; }
+      .header-card { 
+        background: none !important; 
+        color: #000 !important; 
+        box-shadow: none; 
+        border-bottom: 2px solid #000;
+        padding: 0 0 10px 0;
+      }
+      .brand-title { color: #000 !important; font-size: 22px; }
+      .brand-subtitle { color: #444 !important; }
+      .logo-container { border: none; box-shadow: none; width: 70px; height: 70px; margin-bottom: 4px; }
+      #tab-order { display: block !important; }
+      #tab-calendar, #tab-list, #settingsPanel { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- മെയിൻ ബ്രാൻഡിംഗ് ഹെഡർ -->
+  <div class="header-card">
+    <div class="logo-container">
+      <img src="logo.png" alt="Sagar Events Logo" onerror="this.src='https://via.placeholder.com/82?text=SAGAR'">
+    </div>
+    <h1 class="brand-title">SAGAR EVENTS & CATERING</h1>
+    <div class="brand-subtitle">Edathanattukara • Premium Catering & Events</div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <div class="tab-bar no-print">
+    <button class="tab-btn active" onclick="switchTab('order')">📝 ഓർഡർ</button>
+    <button class="tab-btn" onclick="switchTab('calendar')">📅 കലണ്ടർ</button>
+    <button class="tab-btn" onclick="switchTab('list')">📋 ലിസ്റ്റ്</button>
+  </div>
+
+  <!-- TAB 1: ഓർഡർ ഫോമും ബില്ലിംഗും -->
+  <div id="tab-order">
+    <div class="card">
+      <div class="grid">
+        <div>
+          <label>Venue (സ്ഥലം):</label>
+          <input type="text" id="venue" value="Edathanattukara">
+        </div>
+        <div>
+          <label>Pax (ആളുകൾ):</label>
+          <input type="number" id="pax" value="2000">
+        </div>
+        <div>
+          <label>Date (തീയതി):</label>
+          <input type="date" id="orderDate">
+        </div>
+        <div>
+          <label>Customer Name:</label>
+          <input type="text" id="custName" placeholder="പേര് / ഫോൺ">
+        </div>
+      </div>
+
+      <div class="no-print" style="margin-top: 12px; display: flex; gap: 6px;">
+        <button class="btn btn-orange" onclick="toggleSettings()">⚙️ Settings</button>
+        <button class="btn btn-green" style="flex:1;" onclick="saveCurrentOrder()">💾 Save</button>
+        <button class="btn btn-blue" onclick="window.print()">📄 PDF</button>
+      </div>
+    </div>
+
+    <!-- സെറ്റിംഗ്സ് പാനൽ -->
+    <div id="settingsPanel" class="card no-print" style="display:none; border:2px dashed #0284c7; background: #f0fdf4;">
+      <h4 style="color:#0369a1;">⚙️ മെനു ഐറ്റംസ് സെറ്റിംഗ്സ്</h4>
+      <div style="display: flex; gap: 5px; margin-bottom: 8px;">
+        <input type="text" id="newMasterItem" placeholder="Item Name">
+        <input type="number" id="newMasterRate" placeholder="Rate/Kg" style="max-width: 95px;">
+        <button class="btn btn-blue" onclick="addMasterItem()">Add</button>
+      </div>
+      <div id="masterListTags" style="display:flex; flex-wrap:wrap; gap:5px;"></div>
+    </div>
+
+    <!-- ഐറ്റംസ് സെലക്ട് ചെയ്യുന്ന ടേബിൾ -->
+    <div class="card">
+      <h3 style="color:#0284c7;">Selected Items & Costing</h3>
+      
+      <div class="no-print" style="display: flex; gap: 5px; margin-bottom: 10px; align-items: flex-end;">
+        <div style="flex: 2;">
+          <label>ഐറ്റം:</label>
+          <select id="itemDropdown"></select>
+        </div>
+        <div style="flex: 1;">
+          <label>Qty:</label>
+          <input type="number" id="orderQty" placeholder="അളവ്">
+        </div>
+        <div style="flex: 1;">
+          <label>Rate (₹):</label>
+          <input type="number" id="orderRate" placeholder="വില">
+        </div>
+        <button class="btn btn-blue" onclick="addItemToOrder()">+ Add</button>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th style="width: 55px;">Qty</th>
+              <th style="width: 60px;">Rate</th>
+              <th style="width: 75px;" class="text-right">Total</th>
+              <th class="no-print" style="width: 30px;"></th>
+            </tr>
+          </thead>
+          <tbody id="orderTableBody"></tbody>
+        </table>
+      </div>
+
+      <div style="font-size: 17px; font-weight: 800; text-align: right; margin-top: 14px; color: #0d47a1;">
+        Total: ₹<span id="grandTotal">0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: പ്രതിമാസ കലണ്ടർ -->
+  <div id="tab-calendar" style="display:none;">
+    <div class="card">
+      <div class="cal-header">
+        <button class="btn btn-blue" style="padding:6px 12px;" onclick="changeMonth(-1)">◀ മുൻപ്</button>
+        <h4 id="calMonthTitle" style="margin:0; color:#0d47a1;">Month Year</h4>
+        <button class="btn btn-blue" style="padding:6px 12px;" onclick="changeMonth(1)">അടുത്തത് ▶</button>
+      </div>
+      
+      <div class="cal-grid" id="calWeekDays">
+        <div class="cal-day-name">S</div><div class="cal-day-name">M</div><div class="cal-day-name">T</div>
+        <div class="cal-day-name">W</div><div class="cal-day-name">T</div><div class="cal-day-name">F</div><div class="cal-day-name">S</div>
+      </div>
+      <div class="cal-grid" id="calDaysGrid" style="margin-top:6px;"></div>
+    </div>
+
+    <!-- തിരഞ്ഞെടുത്ത തീയതിയിലെ വിവരങ്ങൾ -->
+    <div class="card">
+      <h4 id="selectedDateTitle" style="color:#0284c7;">തീയതിയിലെ ഓർഡറുകൾ</h4>
+      <div id="dateOrdersList">
+        <p style="font-size: 13px; color: #64748b;">കലണ്ടറിൽ ഓർഡർ ഉള്ള തീയതിയിൽ തൊടുക.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: എല്ലാ ഓർഡറുകളുടെയും ലിസ്റ്റ് -->
+  <div id="tab-list" style="display:none;">
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <h3 style="margin:0; color:#0d47a1; font-size:16px;">സേവ് ചെയ്ത ഓർഡറുകൾ</h3>
+        <input type="month" id="filterMonth" style="width:auto; padding:4px 6px; font-size:13px;" onchange="renderAllOrdersList()">
+      </div>
+      <div id="allOrdersContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    const defaultMaster = [
+      { name: "Welcome Juice Live (5 Type)", rate: 40 },
+      { name: "Lagon Biriyani", rate: 180 },
+      { name: "Beef Zurbiyani", rate: 220 },
+      { name: "Beef Varattu", rate: 380 },
+      { name: "Chicken Kethal", rate: 260 },
+      { name: "Pickle & Salad", rate: 15 },
+      { name: "Vegetarian Meals", rate: 120 },
+      { name: "Mineral Water (2500)", rate: 10 },
+      { name: "Live Tea Counter (6 Type)", rate: 25 }
+    ];
+
+    let masterItems = JSON.parse(localStorage.getItem("sagarMasterItems")) || defaultMaster;
+    let savedOrders = JSON.parse(localStorage.getItem("sagarOrdersList")) || [];
+    let currentOrderItems = [];
+    let currentLoadedOrderId = null;
+    let calCurrentDate = new Date();
+
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-order').style.display = 'none';
+      document.getElementById('tab-calendar').style.display = 'none';
+      document.getElementById('tab-list').style.display = 'none';
+
+      if (tab === 'order') {
+        document.getElementById('tab-order').style.display = 'block';
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+      } else if (tab === 'calendar') {
+        document.getElementById('tab-calendar').style.display = 'block';
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        renderCalendar();
+      } else if (tab === 'list') {
+        document.getElementById('tab-list').style.display = 'block';
+        document.querySelectorAll('.tab-btn')[2].classList.add('active');
+        renderAllOrdersList();
+      }
+    }
+
+    function saveMaster() {
+      localStorage.setItem("sagarMasterItems", JSON.stringify(masterItems));
+      populateDropdown();
+      renderMasterTags();
+    }
+
+    function toggleSettings() {
+      const panel = document.getElementById("settingsPanel");
+      panel.style.display = panel.style.display === "block" ? "none" : "block";
+    }
+
+    function populateDropdown() {
+      const dd = document.getElementById("itemDropdown");
+      dd.innerHTML = '<option value="">-- ഐറ്റം തിരഞ്ഞെടുക്കുക --</option>';
+      masterItems.forEach((it, idx) => {
+        dd.innerHTML += `<option value="${idx}">${it.name}</option>`;
+      });
+    }
+
+    document.getElementById("itemDropdown").addEventListener("change", function() {
+      const idx = this.value;
+      if (idx !== "") {
+        document.getElementById("orderRate").value = masterItems[idx].rate;
+      }
+    });
+
+    function renderMasterTags() {
+      const cont = document.getElementById("masterListTags");
+      cont.innerHTML = "";
+      masterItems.forEach((it, i) => {
+        cont.innerHTML += `
+          <span style="background:#e0f2fe; color:#0369a1; font-weight:600; padding:4px 8px; border-radius:8px; font-size:12px; display:inline-flex; align-items:center;">
+            ${it.name} (₹${it.rate}) 
+            <b style="color:#ef4444; margin-left:6px; cursor:pointer;" onclick="deleteMasterItem(${i})">×</b>
+          </span>`;
+      });
+    }
+
+    function addMasterItem() {
+      const name = document.getElementById("newMasterItem").value.trim();
+      const rate = parseFloat(document.getElementById("newMasterRate").value) || 0;
+      if (name) {
+        masterItems.push({ name, rate });
+        saveMaster();
+        document.getElementById("newMasterItem").value = "";
+        document.getElementById("newMasterRate").value = "";
+      }
+    }
+
+    function deleteMasterItem(idx) {
+      masterItems.splice(idx, 1);
+      saveMaster();
+    }
+
+    function addItemToOrder() {
+      const dd = document.getElementById("itemDropdown");
+      const idx = dd.value;
+      const qty = parseFloat(document.getElementById("orderQty").value);
+      const rate = parseFloat(document.getElementById("orderRate").value);
+
+      if (idx === "" || isNaN(qty) || isNaN(rate)) {
+        alert("ദയവായി ഐറ്റം, അളവ് (Qty), റേറ്റ് എന്നിവ നൽകുക.");
+        return;
+      }
+
+      currentOrderItems.push({
+        name: masterItems[idx].name,
+        qty: qty,
+        rate: rate,
+        total: qty * rate
+      });
+
+      renderCurrentOrderTable();
+      document.getElementById("orderQty").value = "";
+    }
+
+    function renderCurrentOrderTable() {
+      const tbody = document.getElementById("orderTableBody");
+      tbody.innerHTML = "";
+      let grandTotal = 0;
+
+      currentOrderItems.forEach((item, idx) => {
+        grandTotal += item.total;
+        tbody.innerHTML += `
+          <tr>
+            <td><strong>${item.name}</strong></td>
+            <td>${item.qty}</td>
+            <td>₹${item.rate}</td>
+            <td class="text-right">₹${item.total.toLocaleString()}</td>
+            <td class="no-print text-right">
+              <button class="btn btn-red" style="padding:2px 6px; font-size:11px;" onclick="removeOrderItem(${idx})">✕</button>
+            </td>
+          </tr>`;
+      });
+
+      document.getElementById("grandTotal").innerText = grandTotal.toLocaleString();
+    }
+
+    function removeOrderItem(idx) {
+      currentOrderItems.splice(idx, 1);
+      renderCurrentOrderTable();
+    }
+
+    function saveCurrentOrder() {
+      const venue = document.getElementById("venue").value.trim();
+      const pax = document.getElementById("pax").value;
+      const date = document.getElementById("orderDate").value;
+      const custName = document.getElementById("custName").value.trim();
+
+      if (!date) {
+        alert("ദയവായി ഓർഡർ തീയതി രേഖപ്പെടുത്തുക.");
+        return;
+      }
+      if (currentOrderItems.length === 0) {
+        alert("ഓർഡറിൽ കുറഞ്ഞത് ഒരു ഐറ്റം എങ്കിലും ചേർക്കുക.");
+        return;
+      }
+
+      let grandTotal = currentOrderItems.reduce((sum, item) => sum + item.total, 0);
+
+      const orderData = {
+        id: currentLoadedOrderId || Date.now(),
+        venue: venue || "Edathanattukara",
+        pax: pax,
+        date: date,
+        custName: custName,
+        items: [...currentOrderItems],
+        total: grandTotal
+      };
+
+      if (currentLoadedOrderId) {
+        const index = savedOrders.findIndex(o => o.id === currentLoadedOrderId);
+        if (index !== -1) savedOrders[index] = orderData;
+      } else {
+        savedOrders.push(orderData);
+        currentLoadedOrderId = orderData.id;
+      }
+
+      localStorage.setItem("sagarOrdersList", JSON.stringify(savedOrders));
+      alert("ഓർഡർ വിജയകരമായി സേവ് ചെയ്തു!");
+    }
+
+    function loadOrder(id) {
+      const order = savedOrders.find(o => o.id === id);
+      if (!order) return;
+
+      currentLoadedOrderId = order.id;
+      document.getElementById("venue").value = order.venue;
+      document.getElementById("pax").value = order.pax;
+      document.getElementById("orderDate").value = order.date;
+      document.getElementById("custName").value = order.custName || "";
+      currentOrderItems = [...order.items];
+
+      renderCurrentOrderTable();
+      switchTab('order');
+    }
+
+    function deleteOrder(id, event) {
+      if (event) event.stopPropagation();
+      if (confirm("ഈ ഓർഡർ ഒഴിവാക്കണോ?")) {
+        savedOrders = savedOrders.filter(o => o.id !== id);
+        localStorage.setItem("sagarOrdersList", JSON.stringify(savedOrders));
+        renderAllOrdersList();
+        renderCalendar();
+      }
+    }
+
+    function renderCalendar() {
+      const year = calCurrentDate.getFullYear();
+      const month = calCurrentDate.getMonth();
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      
+      document.getElementById("calMonthTitle").innerText = `${monthNames[month]} ${year}`;
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const grid = document.getElementById("calDaysGrid");
+      grid.innerHTML = "";
+
+      for (let i = 0; i < firstDay; i++) {
+        grid.innerHTML += `<div class="cal-cell empty"></div>`;
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const dayOrders = savedOrders.filter(o => o.date === dStr);
+        const hasOrder = dayOrders.length > 0;
+
+        const cell = document.createElement("div");
+        cell.className = `cal-cell ${hasOrder ? 'has-order' : ''}`;
+        cell.innerText = day;
+        if (hasOrder) {
+          const badge = document.createElement("div");
+          badge.className = "order-badge";
+          cell.appendChild(badge);
+        }
+
+        cell.onclick = () => showOrdersForDate(dStr, dayOrders);
+        grid.appendChild(cell);
+      }
+    }
+
+    function changeMonth(delta) {
+      calCurrentDate.setMonth(calCurrentDate.getMonth() + delta);
+      renderCalendar();
+    }
+
+    function showOrdersForDate(dateStr, orders) {
+      document.querySelectorAll('.cal-cell').forEach(c => c.classList.remove('active-day'));
+      event.currentTarget.classList.add('active-day');
+
+      document.getElementById("selectedDateTitle").innerText = `തീയതി: ${dateStr}`;
+      const container = document.getElementById("dateOrdersList");
+      container.innerHTML = "";
+
+      if (orders.length === 0) {
+        container.innerHTML = `<p style="font-size:13px; color:#64748b;">ഈ തീയതിയിൽ ഓർഡറുകൾ ഒന്നും ഇല്ല.</p>`;
+        return;
+      }
+
+      orders.forEach(o => {
+        container.innerHTML += `
+          <div class="order-card-item" onclick="loadOrder(${o.id})">
+            <div>
+              <strong style="color:#0284c7; font-size:14px;">${o.venue}</strong> (${o.pax} Pax)<br>
+              <span style="font-size:12px; color:#64748b;">പാർട്ടി: ${o.custName || 'N/A'} | ₹${o.total.toLocaleString()}</span>
+            </div>
+            <button class="btn btn-orange" style="font-size:11px; padding:5px 8px;">തുറക്കുക ➔</button>
+          </div>`;
+      });
+    }
+
+    function renderAllOrdersList() {
+      const container = document.getElementById("allOrdersContainer");
+      const monthFilter = document.getElementById("filterMonth").value;
+      container.innerHTML = "";
+
+      let list = savedOrders;
+      if (monthFilter) {
+        list = list.filter(o => o.date.startsWith(monthFilter));
+      }
+
+      list.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      if (list.length === 0) {
+        container.innerHTML = `<p style="font-size:13px; color:#64748b; text-align:center;">ഓർഡറുകൾ ലഭ്യമല്ല.</p>`;
+        return;
+      }
+
+      list.forEach(o => {
+        container.innerHTML += `
+          <div class="order-card-item" onclick="loadOrder(${o.id})">
+            <div>
+              <strong style="font-size:14px; color:#0284c7;">${o.venue}</strong> - ${o.pax} Pax<br>
+              <span style="font-size:12px; color:#475569;">📅 ${o.date} | ${o.custName || 'Unknown'}</span><br>
+              <b style="font-size:13px; color:#0d47a1;">ആകെ: ₹${o.total.toLocaleString()}</b>
+            </div>
+            <div style="display:flex; gap:5px;">
+              <button class="btn btn-blue" style="padding:5px 8px; font-size:11px;" onclick="loadOrder(${o.id})">Edit</button>
+              <button class="btn btn-red" style="padding:5px 8px; font-size:11px;" onclick="deleteOrder(${o.id}, event)">Del</button>
+            </div>
+          </div>`;
+      });
+    }
+
+    document.getElementById("orderDate").valueAsDate = new Date();
+    populateDropdown();
+    renderMasterTags();
+  </script>
+</body>
+</html>
